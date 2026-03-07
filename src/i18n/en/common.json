@@ -1,0 +1,41 @@
+{
+  "welcome": "Welcome to Dream Analyzer API",
+  "validation": {
+    "failed": "Validation failed",
+    "required": "{field} is required",
+    "minLength": "{field} must be at least {min} characters",
+    "maxLength": "{field} must be at most {max} characters",
+    "email": "Invalid email format",
+    "number": "{field} must be a number",
+    "invalidType": "{field} has invalid type",
+    "invalidEnum": "Invalid value for {field}"
+  },
+  "fields": {
+    "email": "Email",
+    "password": "Password",
+    "name": "Name",
+    "surname": "Surname",
+    "title": "Title",
+    "content": "Content",
+    "date": "Date",
+    "tags": "Tags",
+    "isLucid": "Lucid dream",
+    "mood": "Mood",
+    "dreamId": "Dream ID",
+    "analysisType": "Analysis type",
+    "language": "Language",
+    "page": "Page",
+    "limit": "Limit",
+    "sortBy": "Sort by",
+    "sortOrder": "Sort order"
+  },
+  "errors": {
+    "unauthorized": "Unauthorized access",
+    "forbidden": "Access forbidden",
+    "notFound": "Resource not found",
+    "internalError": "Internal server error",
+    "invalidCredentials": "Invalid email or password",
+    "emailAlreadyExists": "Email address already exists",
+    "userNotFound": "User not found"
+  }
+}

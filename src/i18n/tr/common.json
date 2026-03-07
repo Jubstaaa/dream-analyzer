@@ -1,0 +1,41 @@
+{
+  "welcome": "Dream Analyzer API'ye hoş geldiniz",
+  "validation": {
+    "failed": "Doğrulama hatası",
+    "required": "{field} zorunludur",
+    "minLength": "{field} en az {min} karakter olmalıdır",
+    "maxLength": "{field} en fazla {max} karakter olmalıdır",
+    "email": "Geçersiz e-posta formatı",
+    "number": "{field} bir sayı olmalıdır",
+    "invalidType": "{field} geçersiz tipte",
+    "invalidEnum": "{field} için geçersiz değer"
+  },
+  "fields": {
+    "email": "E-posta",
+    "password": "Şifre",
+    "name": "İsim",
+    "surname": "Soyisim",
+    "title": "Başlık",
+    "content": "İçerik",
+    "date": "Tarih",
+    "tags": "Etiketler",
+    "isLucid": "Lusid rüya",
+    "mood": "Ruh hali",
+    "dreamId": "Rüya ID",
+    "analysisType": "Analiz tipi",
+    "language": "Dil",
+    "page": "Sayfa",
+    "limit": "Limit",
+    "sortBy": "Sıralama alanı",
+    "sortOrder": "Sıralama yönü"
+  },
+  "errors": {
+    "unauthorized": "Yetkisiz erişim",
+    "forbidden": "Erişim yasak",
+    "notFound": "Kaynak bulunamadı",
+    "internalError": "Sunucu hatası",
+    "invalidCredentials": "Geçersiz e-posta veya şifre",
+    "emailAlreadyExists": "Bu e-posta adresi zaten kayıtlı",
+    "userNotFound": "Kullanıcı bulunamadı"
+  }
+}

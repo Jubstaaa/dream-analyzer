@@ -1,0 +1,44 @@
+# Node.js / Bun
+node_modules/
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+bun.lockb
+.pnp
+.pnp.js
+
+# NestJS
+dist/
+build/
+out-tsc/
+
+# Testing
+coverage/
+.nyc_output/
+
+# Environment
+.env
+.env.test
+.env.production
+.env.local
+.env.*.local
+
+# IDE / OS
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+
+# Logs
+logs
+*.log
+
+# Typeorm / Database / Supabase if any local db stuff
+# /supabase/.temp/
+
+# Misc
+.vercel

@@ -1,0 +1,8 @@
+{
+  "created": "Dream created successfully",
+  "updated": "Dream updated successfully",
+  "deleted": "Dream deleted successfully",
+  "notFound": "Dream not found",
+  "analyzed": "Dream analyzed successfully",
+  "fetched": "Dreams fetched successfully"
+}
