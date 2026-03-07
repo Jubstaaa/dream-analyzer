@@ -4,6 +4,8 @@ export interface UserEntity {
   name: string;
   surname: string;
   imageUrl: string | null;
+  gender?: string | null;
+  birthday?: string | null;
   premiumExpireDate: string | null;
   createdAt: string;
   updatedAt: string;
@@ -15,6 +17,8 @@ export class User implements UserEntity {
   name: string;
   surname: string;
   imageUrl: string | null;
+  gender?: string | null;
+  birthday?: string | null;
   premiumExpireDate: string | null;
   createdAt: string;
   updatedAt: string;
@@ -25,6 +29,8 @@ export class User implements UserEntity {
     this.name = data.name;
     this.surname = data.surname;
     this.imageUrl = data.imageUrl;
+    this.gender = data.gender;
+    this.birthday = data.birthday;
     this.premiumExpireDate = data.premiumExpireDate;
     this.createdAt = data.createdAt;
     this.updatedAt = data.updatedAt;

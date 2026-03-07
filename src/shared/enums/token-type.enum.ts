@@ -12,9 +12,7 @@ export enum TokenType {
   LOGIN_VERIFY = 1,
   REGISTER_VERIFY = 2,
   CREATE_PROFILE = 3,
-  FORGOT_PASSWORD_VERIFY = 4,
-  RESET_PASSWORD = 5,
 }
 
-export const TOKEN_TYPE_VALUES = [0, 1, 2, 3, 4, 5] as const;
+export const TOKEN_TYPE_VALUES = [0, 1, 2, 3] as const;
 export type TokenTypeValue = (typeof TOKEN_TYPE_VALUES)[number];

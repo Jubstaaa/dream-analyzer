@@ -1,37 +1,53 @@
-import { Body, Controller, Get, Patch } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { I18n, I18nContext } from 'nestjs-i18n';
+import { Body, Controller, Get, Patch, Post } from "@nestjs/common";
+import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { I18n, I18nContext } from "nestjs-i18n";
 
-import { CurrentUser } from '@features/auth';
-import type { UserEntity } from '@shared/entities';
+import { CurrentUser } from "@features/auth";
+import type { UserEntity } from "@shared/entities";
 
-import { UserService } from './user.service';
-import { UpdateProfileDto, UserProfileResponseDto } from './dto';
+import { UserService } from "./user.service";
+import {
+  CreateProfileDto,
+  UpdateProfileDto,
+  UserProfileResponseDto,
+} from "./dto";
 
-@Controller('user')
-@ApiTags('user')
+@Controller("user")
+@ApiTags("user")
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Get('profile')
-  @ApiOperation({ summary: 'Get current user profile' })
+  @Post("profile")
+  @ApiOperation({ summary: "Create user profile" })
   @ApiResponse({
-    status: 200,
-    description: 'Profile fetched successfully',
+    status: 201,
+    description: "Profile created successfully",
     type: UserProfileResponseDto,
   })
-  async getProfile(
+  createProfile(
     @CurrentUser() user: UserEntity,
+    @Body() dto: CreateProfileDto,
     @I18n() i18n: I18nContext,
   ) {
+    return this.userService.createProfile(user, dto, i18n);
+  }
+
+  @Get("profile")
+  @ApiOperation({ summary: "Get current user profile" })
+  @ApiResponse({
+    status: 200,
+    description: "Profile fetched successfully",
+    type: UserProfileResponseDto,
+  })
+  getProfile(@CurrentUser() user: UserEntity, @I18n() i18n: I18nContext) {
     return this.userService.getProfile(user, i18n);
   }
 
-  @Patch('profile')
-  @ApiOperation({ summary: 'Update current user profile' })
+  @Patch("profile")
+  @ApiOperation({ summary: "Update current user profile" })
   @ApiResponse({
     status: 200,
-    description: 'Profile updated successfully',
+    description: "Profile updated successfully",
     type: UserProfileResponseDto,
   })
   async updateProfile(
