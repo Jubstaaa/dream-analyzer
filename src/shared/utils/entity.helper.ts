@@ -1,4 +1,4 @@
-import { NotFoundException } from '@core/exceptions';
+import { NotFoundException } from "@core/exceptions";
 
 export class EntityHelper {
   static verifyOwnership<T extends { userId: string }>(

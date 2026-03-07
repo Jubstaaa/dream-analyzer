@@ -1,7 +1,7 @@
-import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
-import { Response } from 'express';
-import { I18nContext } from 'nestjs-i18n';
-import { ZodValidationException } from 'nestjs-zod';
+import { ArgumentsHost, Catch, ExceptionFilter } from "@nestjs/common";
+import { Response } from "express";
+import { I18nContext } from "nestjs-i18n";
+import { ZodValidationException } from "nestjs-zod";
 
 interface ZodIssueBase {
   code: string;
@@ -22,7 +22,7 @@ export class ZodValidationExceptionFilter implements ExceptionFilter {
     const issues = zodError?.issues ?? [];
 
     const errors = issues.map((issue: ZodIssueBase) => {
-      const field = issue.path.join('.');
+      const field = issue.path.join(".");
       const translatedMessage = this.translateError(issue, field, i18n);
 
       return {
@@ -34,7 +34,7 @@ export class ZodValidationExceptionFilter implements ExceptionFilter {
 
     response.status(400).json({
       statusCode: 400,
-      message: i18n?.t('common.validation.failed') ?? 'Validation failed111',
+      message: i18n?.t("common.validation.failed") ?? "Validation failed111",
       errors,
     });
   }
@@ -51,45 +51,45 @@ export class ZodValidationExceptionFilter implements ExceptionFilter {
     const fieldName = this.translateFieldName(field, i18n);
 
     switch (issue.code) {
-      case 'too_small':
+      case "too_small":
         return String(
-          i18n.t('common.validation.minLength', {
+          i18n.t("common.validation.minLength", {
             args: { field: fieldName, min: issue.minimum ?? 0 },
           }),
         );
 
-      case 'too_big':
+      case "too_big":
         return String(
-          i18n.t('common.validation.maxLength', {
+          i18n.t("common.validation.maxLength", {
             args: { field: fieldName, max: issue.maximum ?? 0 },
           }),
         );
 
-      case 'invalid_type':
-        if (issue.message.includes('Required')) {
+      case "invalid_type":
+        if (issue.message.includes("Required")) {
           return String(
-            i18n.t('common.validation.required', {
+            i18n.t("common.validation.required", {
               args: { field: fieldName },
             }),
           );
         }
         return String(
-          i18n.t('common.validation.invalidType', {
+          i18n.t("common.validation.invalidType", {
             args: { field: fieldName },
           }),
         );
 
-      case 'invalid_string':
-      case 'invalid_format':
-        if (issue.message.includes('email')) {
-          return String(i18n.t('common.validation.email'));
+      case "invalid_string":
+      case "invalid_format":
+        if (issue.message.includes("email")) {
+          return String(i18n.t("common.validation.email"));
         }
         return issue.message;
 
-      case 'invalid_enum_value':
-      case 'invalid_value':
+      case "invalid_enum_value":
+      case "invalid_value":
         return String(
-          i18n.t('common.validation.invalidEnum', {
+          i18n.t("common.validation.invalidEnum", {
             args: { field: fieldName },
           }),
         );

@@ -1,2 +1,2 @@
-export * from './env.config';
-export * from './supabase.config';
+export * from "./env.config";
+export * from "./supabase.config";

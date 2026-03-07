@@ -1,7 +1,7 @@
-import { Injectable, LoggerService as NestLoggerService } from '@nestjs/common';
-import * as winston from 'winston';
+import { Injectable, LoggerService as NestLoggerService } from "@nestjs/common";
+import * as winston from "winston";
 
-import { env } from '@config';
+import { env } from "@config";
 
 @Injectable()
 export class LoggerService implements NestLoggerService {
@@ -9,24 +9,24 @@ export class LoggerService implements NestLoggerService {
 
   constructor() {
     this.logger = winston.createLogger({
-      level: env.NODE_ENV === 'production' ? 'info' : 'debug',
+      level: env.NODE_ENV === "production" ? "info" : "debug",
       format: winston.format.combine(
-        winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+        winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
         winston.format.errors({ stack: true }),
         winston.format.splat(),
         winston.format.json(),
       ),
-      defaultMeta: { service: 'dream-analyzer' },
+      defaultMeta: { service: "dream-analyzer" },
       transports: [
         new winston.transports.Console({
           format: winston.format.combine(
             winston.format.colorize(),
             winston.format.printf(
               ({ timestamp, level, message, context, ...meta }) => {
-                const ctx = context ? `[${context}]` : '';
+                const ctx = context ? `[${context}]` : "";
                 const metaStr = Object.keys(meta).length
                   ? JSON.stringify(meta)
-                  : '';
+                  : "";
                 return `${timestamp} ${level} ${ctx} ${message} ${metaStr}`;
               },
             ),
@@ -35,16 +35,16 @@ export class LoggerService implements NestLoggerService {
       ],
     });
 
-    if (env.NODE_ENV === 'production') {
+    if (env.NODE_ENV === "production") {
       this.logger.add(
         new winston.transports.File({
-          filename: 'logs/error.log',
-          level: 'error',
+          filename: "logs/error.log",
+          level: "error",
         }),
       );
       this.logger.add(
         new winston.transports.File({
-          filename: 'logs/combined.log',
+          filename: "logs/combined.log",
         }),
       );
     }

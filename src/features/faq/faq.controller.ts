@@ -1,24 +1,24 @@
-import { Controller, Get, Query } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { I18n, I18nContext } from 'nestjs-i18n';
+import { Controller, Get, Query } from "@nestjs/common";
+import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { I18n, I18nContext } from "nestjs-i18n";
 
-import { Public } from '@features/auth';
+import { Public } from "@features/auth";
 
-import { FaqService } from './faq.service';
-import { GetFaqsQueryDto } from './dto/faq.request';
-import { FaqListResponseDto } from './dto/faq.response';
+import { FaqService } from "./faq.service";
+import { GetFaqsQueryDto } from "./dto/faq.request";
+import { FaqListResponseDto } from "./dto/faq.response";
 
-@Controller('faqs')
-@ApiTags('faq')
+@Controller("faqs")
+@ApiTags("faq")
 export class FaqController {
   constructor(private readonly faqService: FaqService) {}
 
   @Get()
   @Public()
-  @ApiOperation({ summary: 'Get FAQs' })
+  @ApiOperation({ summary: "Get FAQs" })
   @ApiResponse({
     status: 200,
-    description: 'Success',
+    description: "Success",
     type: FaqListResponseDto,
   })
   async getAllFaqs(@Query() query: GetFaqsQueryDto, @I18n() i18n: I18nContext) {

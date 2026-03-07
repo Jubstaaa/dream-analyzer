@@ -1,5 +1,5 @@
-import { createZodDto } from 'nestjs-zod';
+import { createZodDto } from "nestjs-zod";
 
-import { PaginationRequestSchema } from '../schema/common.schema';
+import { PaginationRequestSchema } from "../schema/common.schema";
 
 export class PaginationDto extends createZodDto(PaginationRequestSchema) {}

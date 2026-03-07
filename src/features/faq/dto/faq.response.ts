@@ -1,7 +1,7 @@
-import { createZodDto } from 'nestjs-zod';
-import { z } from 'zod';
+import { createZodDto } from "nestjs-zod";
+import { z } from "zod";
 
-import { LanguageSchema } from '@shared/schema/common.schema';
+import { LanguageSchema } from "@shared/schema/common.schema";
 
 /**
  * FAQ item schema

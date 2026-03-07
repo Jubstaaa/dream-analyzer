@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
 
-import { LoggerService } from '@core/logger';
-import { UserRepository } from '@core/repositories';
-import { ApiResponseBuilder } from '@shared/utils';
+import { LoggerService } from "@core/logger";
+import { UserRepository } from "@core/repositories";
+import { ApiResponseBuilder } from "@shared/utils";
 
 @Injectable()
 export class SubscriptionService {
@@ -15,7 +15,7 @@ export class SubscriptionService {
     const user = await this.userRepository.findById(userId);
 
     if (!user) {
-      throw new Error('User not found');
+      throw new Error("User not found");
     }
 
     const now = new Date();
@@ -36,7 +36,7 @@ export class SubscriptionService {
             )
           : 0,
       },
-      'Subscription status retrieved successfully',
+      "Subscription status retrieved successfully",
     );
   }
 
@@ -46,7 +46,7 @@ export class SubscriptionService {
 
     this.logger.log(
       `Verifying ${platform} purchase for user ${userId}`,
-      'SubscriptionService',
+      "SubscriptionService",
     );
 
     // In production:
@@ -64,7 +64,7 @@ export class SubscriptionService {
 
     this.logger.log(
       `Premium activated for user ${userId} until ${premiumExpireDate.toISOString()}`,
-      'SubscriptionService',
+      "SubscriptionService",
     );
 
     return ApiResponseBuilder.success(
@@ -72,7 +72,7 @@ export class SubscriptionService {
         isPremium: true,
         premiumExpireDate: premiumExpireDate.toISOString(),
       },
-      'Premium subscription activated successfully',
+      "Premium subscription activated successfully",
     );
   }
 
@@ -85,12 +85,12 @@ export class SubscriptionService {
 
     this.logger.log(
       `Subscription cancelled for user ${userId}`,
-      'SubscriptionService',
+      "SubscriptionService",
     );
 
     return ApiResponseBuilder.success(
       null,
-      'Subscription cancelled successfully',
+      "Subscription cancelled successfully",
     );
   }
 }

@@ -4,12 +4,12 @@ import {
   ExceptionFilter,
   HttpException,
   HttpStatus,
-} from '@nestjs/common';
-import { Response } from 'express';
-import { I18nContext } from 'nestjs-i18n';
+} from "@nestjs/common";
+import { Response } from "express";
+import { I18nContext } from "nestjs-i18n";
 
-import { BaseException, ErrorResponse } from '@core/exceptions';
-import { LoggerService } from '@core/logger';
+import { BaseException, ErrorResponse } from "@core/exceptions";
+import { LoggerService } from "@core/logger";
 
 @Catch(HttpException, BaseException, Error)
 export class GlobalExceptionFilter implements ExceptionFilter {
@@ -44,37 +44,37 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       errorResponse = {
         statusCode: status,
         message:
-          typeof exceptionResponse === 'string'
+          typeof exceptionResponse === "string"
             ? exceptionResponse
             : (exceptionResponse as { message?: string }).message ||
-              'An error occurred',
-        errorCode: 'HTTP_EXCEPTION',
+              "An error occurred",
+        errorCode: "HTTP_EXCEPTION",
         path: request.url,
       };
     } else {
       const errorMessage =
-        exception instanceof Error ? exception.message : 'Unknown error';
+        exception instanceof Error ? exception.message : "Unknown error";
 
       this.logger.error(
-        'Unhandled exception',
+        "Unhandled exception",
         exception instanceof Error ? exception.stack : undefined,
-        'GlobalExceptionFilter',
+        "GlobalExceptionFilter",
       );
 
       errorResponse = {
         statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-        message: 'Internal server error',
-        errorCode: 'INTERNAL_SERVER_ERROR',
+        message: "Internal server error",
+        errorCode: "INTERNAL_SERVER_ERROR",
         path: request.url,
         details:
-          process.env.NODE_ENV === 'development' ? errorMessage : undefined,
+          process.env.NODE_ENV === "development" ? errorMessage : undefined,
       };
     }
 
     this.logger.error(
       `${request.method} ${request.url} - ${errorResponse.statusCode} ${errorResponse.message}`,
       undefined,
-      'GlobalExceptionFilter',
+      "GlobalExceptionFilter",
     );
 
     response.status(errorResponse.statusCode).json(errorResponse);
@@ -90,13 +90,13 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     }
 
     const errorKeyMap: Record<string, string> = {
-      INVALID_CREDENTIALS: 'common.errors.invalidCredentials',
-      EMAIL_ALREADY_EXISTS: 'common.errors.emailAlreadyExists',
-      USER_NOT_FOUND: 'common.errors.userNotFound',
-      NOT_FOUND: 'common.errors.notFound',
-      UNAUTHORIZED: 'common.errors.unauthorized',
-      FORBIDDEN: 'common.errors.forbidden',
-      INTERNAL_SERVER_ERROR: 'common.errors.internalError',
+      INVALID_CREDENTIALS: "common.errors.invalidCredentials",
+      EMAIL_ALREADY_EXISTS: "common.errors.emailAlreadyExists",
+      USER_NOT_FOUND: "common.errors.userNotFound",
+      NOT_FOUND: "common.errors.notFound",
+      UNAUTHORIZED: "common.errors.unauthorized",
+      FORBIDDEN: "common.errors.forbidden",
+      INTERNAL_SERVER_ERROR: "common.errors.internalError",
     };
 
     const key = errorKeyMap[errorCode];

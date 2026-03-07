@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
 
-import { InsightRepository } from '@core/repositories';
-import { PaginationRequest } from '@shared/schema/common.schema';
-import { ApiResponseBuilder } from '@shared/utils';
+import { InsightRepository } from "@core/repositories";
+import { PaginationRequest } from "@shared/schema/common.schema";
+import { ApiResponseBuilder } from "@shared/utils";
 
 @Injectable()
 export class InsightService {
@@ -18,7 +18,7 @@ export class InsightService {
 
     return ApiResponseBuilder.paginated(
       result,
-      'Insights fetched successfully',
+      "Insights fetched successfully",
     );
   }
 }

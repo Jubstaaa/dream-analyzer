@@ -1,25 +1,25 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
 
-import { supabaseAdmin } from '@config';
-import { UserEntity } from '@shared/entities';
+import { supabaseAdmin } from "@config";
+import { UserEntity } from "@shared/entities";
 
-import { BaseRepository } from './base.repository';
+import { BaseRepository } from "./base.repository";
 
 @Injectable()
 export class UserRepository extends BaseRepository<UserEntity> {
   constructor() {
-    super(supabaseAdmin, 'users');
+    super(supabaseAdmin, "users");
   }
 
   async findByEmail(email: string): Promise<UserEntity | null> {
     const { data, error } = await this.supabase
       .from(this.tableName)
-      .select('*')
-      .eq('email', email)
+      .select("*")
+      .eq("email", email)
       .single();
 
     if (error) {
-      if (error.code === 'PGRST116') return null;
+      if (error.code === "PGRST116") return null;
       throw error;
     }
 

@@ -1,4 +1,4 @@
-import { InsightType } from '@shared/enums';
+import { InsightType } from "@shared/enums";
 
 export interface InsightEntity {
   id: string;

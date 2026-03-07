@@ -1,14 +1,14 @@
-import { Injectable } from '@nestjs/common';
-import { I18nContext } from 'nestjs-i18n';
+import { Injectable } from "@nestjs/common";
+import { I18nContext } from "nestjs-i18n";
 
-import { LoggerService } from '@core/logger';
-import { FaqRepository } from '@core/repositories';
+import { LoggerService } from "@core/logger";
+import { FaqRepository } from "@core/repositories";
 import {
   DEFAULT_LANGUAGE,
   SupportedLanguage,
   SUPPORTED_LANGUAGES,
-} from '@shared';
-import { PaginationOptions } from '@shared/utils';
+} from "@shared";
+import { PaginationOptions } from "@shared/utils";
 
 @Injectable()
 export class FaqService {
@@ -24,7 +24,7 @@ export class FaqService {
 
   async getAllFaqs(pagination: Partial<PaginationOptions>, i18n: I18nContext) {
     const requestedLang = this.extractLanguage(i18n);
-    this.logger.debug(`Requested language: ${requestedLang}`, 'FaqService');
+    this.logger.debug(`Requested language: ${requestedLang}`, "FaqService");
 
     const result = await this.faqRepository.findActiveWithTranslations(
       requestedLang,
@@ -37,7 +37,7 @@ export class FaqService {
     );
 
     return {
-      message: String(i18n.t('faq.fetched')),
+      message: String(i18n.t("faq.fetched")),
       data: {
         ...result,
         requestedLanguage: requestedLang,

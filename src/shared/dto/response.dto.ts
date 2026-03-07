@@ -1,7 +1,7 @@
-import { createZodDto } from 'nestjs-zod';
-import { z } from 'zod';
+import { createZodDto } from "nestjs-zod";
+import { z } from "zod";
 
-import { PaginatedResponse } from '../schema/common.schema';
+import { PaginatedResponse } from "../schema/common.schema";
 
 export const ValidationErrorDetailSchema = z.object({
   field: z.string(),

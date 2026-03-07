@@ -1,5 +1,5 @@
-import { createZodDto } from 'nestjs-zod';
-import { z } from 'zod';
+import { createZodDto } from "nestjs-zod";
+import { z } from "zod";
 
 /**
  * Verify Purchase schema
@@ -7,11 +7,11 @@ import { z } from 'zod';
 export const VerifyPurchaseSchema = z.object({
   receiptData: z
     .string()
-    .min(1, 'Receipt data is required')
-    .describe('Purchase receipt from App Store or Google Play'),
+    .min(1, "Receipt data is required")
+    .describe("Purchase receipt from App Store or Google Play"),
   platform: z
-    .enum(['ios', 'android'])
-    .describe('Platform where purchase was made'),
+    .enum(["ios", "android"])
+    .describe("Platform where purchase was made"),
 });
 
 /**

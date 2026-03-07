@@ -1,4 +1,4 @@
-import { DreamType } from '@shared/enums';
+import { DreamType } from "@shared/enums";
 
 export interface DreamEntity {
   id: string;

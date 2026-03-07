@@ -1,17 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
 
-import { supabaseAdmin } from '@config';
-import { DreamEntity } from '@shared/entities';
-import { PaginatedResponse } from '@shared/schema/common.schema';
-import { DreamType } from '@shared/enums';
-import { PaginationOptions } from '@shared/utils';
+import { supabaseAdmin } from "@config";
+import { DreamEntity } from "@shared/entities";
+import { PaginatedResponse } from "@shared/schema/common.schema";
+import { DreamType } from "@shared/enums";
+import { PaginationOptions } from "@shared/utils";
 
-import { BaseRepository } from './base.repository';
+import { BaseRepository } from "./base.repository";
 
 @Injectable()
 export class DreamRepository extends BaseRepository<DreamEntity> {
   constructor() {
-    super(supabaseAdmin, 'dreams');
+    super(supabaseAdmin, "dreams");
   }
 
   async findByUserId(

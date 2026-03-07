@@ -1,10 +1,10 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { createZodDto } from 'nestjs-zod';
-import { z } from 'zod';
+import { ApiProperty } from "@nestjs/swagger";
+import { createZodDto } from "nestjs-zod";
+import { z } from "zod";
 
-import { DreamType } from '@shared/enums';
+import { DreamType } from "@shared/enums";
 
-import { DreamTypeSchema } from './dream.request';
+import { DreamTypeSchema } from "./dream.request";
 
 /**
  * Dream item schema
@@ -54,7 +54,7 @@ export const DreamSuccessResponseSchema = z.object({
 export class DreamItemDto extends createZodDto(DreamItemSchema) {
   @ApiProperty({
     description:
-      'Type of dream: 0=Normal, 1=Nightmare, 2=Lucid, 3=Recurring, 4=Prophetic, 5=Mixed',
+      "Type of dream: 0=Normal, 1=Nightmare, 2=Lucid, 3=Recurring, 4=Prophetic, 5=Mixed",
     enum: [0, 1, 2, 3, 4, 5],
     example: 0,
   })

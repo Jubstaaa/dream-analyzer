@@ -1,4 +1,4 @@
-import { PaginatedResponse } from '@shared/schema/common.schema';
+import { PaginatedResponse } from "@shared/schema/common.schema";
 
 export interface ApiResponse<T> {
   message: string;
@@ -18,7 +18,7 @@ export class ApiResponseBuilder {
     };
   }
 
-  static successMessage(message: string): Omit<ApiResponse<never>, 'data'> {
+  static successMessage(message: string): Omit<ApiResponse<never>, "data"> {
     return {
       message,
     };

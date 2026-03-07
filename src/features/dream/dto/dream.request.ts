@@ -1,12 +1,12 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { createZodDto } from 'nestjs-zod';
-import { z } from 'zod';
+import { ApiProperty } from "@nestjs/swagger";
+import { createZodDto } from "nestjs-zod";
+import { z } from "zod";
 
 import {
   DREAM_CONTENT_MAX_LENGTH,
   DREAM_CONTENT_MIN_LENGTH,
-} from '@shared/constants';
-import { DreamType } from '@shared/enums';
+} from "@shared/constants";
+import { DreamType } from "@shared/enums";
 
 /**
  * Dream type schema (0-5)
@@ -28,8 +28,8 @@ export const CreateDreamSchema = z.object({
       DREAM_CONTENT_MAX_LENGTH,
       `Description must be at most ${DREAM_CONTENT_MAX_LENGTH} characters`,
     )
-    .describe('Dream description to be analyzed by AI'),
-  type: DreamTypeSchema.describe('Type of dream (0-5)'),
+    .describe("Dream description to be analyzed by AI"),
+  type: DreamTypeSchema.describe("Type of dream (0-5)"),
 });
 
 /**
@@ -38,17 +38,17 @@ export const CreateDreamSchema = z.object({
 export class CreateDreamDto extends createZodDto(CreateDreamSchema) {
   @ApiProperty({
     description:
-      'Type of dream: 0=Normal, 1=Nightmare, 2=Lucid, 3=Recurring, 4=Prophetic, 5=Mixed',
+      "Type of dream: 0=Normal, 1=Nightmare, 2=Lucid, 3=Recurring, 4=Prophetic, 5=Mixed",
     enum: [0, 1, 2, 3, 4, 5],
     example: 0,
   })
   type!: DreamType;
 
   @ApiProperty({
-    description: 'Dream description to be analyzed by AI',
+    description: "Dream description to be analyzed by AI",
     minLength: DREAM_CONTENT_MIN_LENGTH,
     maxLength: DREAM_CONTENT_MAX_LENGTH,
-    example: 'I was flying over a beautiful city at night...',
+    example: "I was flying over a beautiful city at night...",
   })
   description!: string;
 }

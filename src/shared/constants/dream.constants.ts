@@ -9,10 +9,10 @@ export const DREAM_CONTENT_MAX_LENGTH = 5000;
 /**
  * Dream analysis fallback values
  */
-export const DEFAULT_SYMBOLS = ['mystery', 'subconscious', 'transformation'];
-export const DEFAULT_EMOTIONS = ['curiosity', 'wonder', 'reflection'];
+export const DEFAULT_SYMBOLS = ["mystery", "subconscious", "transformation"];
+export const DEFAULT_EMOTIONS = ["curiosity", "wonder", "reflection"];
 export const DEFAULT_THEMES = [
-  'self-discovery',
-  'inner journey',
-  'personal growth',
+  "self-discovery",
+  "inner journey",
+  "personal growth",
 ];

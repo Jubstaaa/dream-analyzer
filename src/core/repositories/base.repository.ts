@@ -1,8 +1,8 @@
-import { SupabaseClient } from '@supabase/supabase-js';
+import { SupabaseClient } from "@supabase/supabase-js";
 
-import { NotFoundException } from '@core/exceptions';
-import { PaginatedResponse } from '@shared/schema/common.schema';
-import { PaginationHelper, PaginationOptions } from '@shared/utils';
+import { NotFoundException } from "@core/exceptions";
+import { PaginatedResponse } from "@shared/schema/common.schema";
+import { PaginationHelper, PaginationOptions } from "@shared/utils";
 
 export abstract class BaseRepository<T> {
   constructor(
@@ -13,12 +13,12 @@ export abstract class BaseRepository<T> {
   async findById(id: string): Promise<T | null> {
     const { data, error } = await this.supabase
       .from(this.tableName)
-      .select('*')
-      .eq('id', id)
+      .select("*")
+      .eq("id", id)
       .single();
 
     if (error) {
-      if (error.code === 'PGRST116') return null;
+      if (error.code === "PGRST116") return null;
       throw error;
     }
 
@@ -48,14 +48,14 @@ export abstract class BaseRepository<T> {
 
     let query = this.supabase
       .from(this.tableName)
-      .select('*', { count: 'exact' });
+      .select("*", { count: "exact" });
 
     Object.entries(filters).forEach(([key, value]) => {
       query = query.eq(key, value);
     });
 
     const { data, error, count } = await query
-      .order(sortBy, { ascending: sortOrder === 'asc' })
+      .order(sortBy, { ascending: sortOrder === "asc" })
       .range(from, to);
 
     if (error) throw error;
@@ -84,7 +84,7 @@ export abstract class BaseRepository<T> {
     const { data: updated, error } = await this.supabase
       .from(this.tableName)
       .update(data)
-      .eq('id', id)
+      .eq("id", id)
       .select()
       .single();
 
@@ -97,7 +97,7 @@ export abstract class BaseRepository<T> {
     const { error } = await this.supabase
       .from(this.tableName)
       .delete()
-      .eq('id', id);
+      .eq("id", id);
 
     if (error) throw error;
   }
@@ -105,7 +105,7 @@ export abstract class BaseRepository<T> {
   async count(filter?: Record<string, unknown>): Promise<number> {
     let query = this.supabase
       .from(this.tableName)
-      .select('*', { count: 'exact', head: true });
+      .select("*", { count: "exact", head: true });
 
     if (filter) {
       Object.entries(filter).forEach(([key, value]) => {

@@ -1,8 +1,8 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { createZodDto } from 'nestjs-zod';
-import { z } from 'zod';
+import { ApiProperty } from "@nestjs/swagger";
+import { createZodDto } from "nestjs-zod";
+import { z } from "zod";
 
-import { InsightType } from '@shared/enums';
+import { InsightType } from "@shared/enums";
 
 /**
  * Insight type schema (0-5)
@@ -50,7 +50,7 @@ export const InsightListResponseSchema = z.object({
 export class InsightItemDto extends createZodDto(InsightItemSchema) {
   @ApiProperty({
     description:
-      'Type of insight: 0=Psychological, 1=Spiritual, 2=Statistical, 3=Actionable, 4=Motivational, 5=Astrological',
+      "Type of insight: 0=Psychological, 1=Spiritual, 2=Statistical, 3=Actionable, 4=Motivational, 5=Astrological",
     enum: [0, 1, 2, 3, 4, 5],
     example: 0,
   })

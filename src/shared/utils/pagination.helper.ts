@@ -1,17 +1,17 @@
-import { PaginatedResponse } from '@shared/schema/common.schema';
+import { PaginatedResponse } from "@shared/schema/common.schema";
 
 export interface PaginationOptions {
   pageIndex: number;
   pageSize: number;
   sortBy?: string;
-  sortOrder?: 'asc' | 'desc';
+  sortOrder?: "asc" | "desc";
 }
 
 export interface PaginationDefaults {
   pageIndex: number;
   pageSize: number;
   sortBy: string;
-  sortOrder: 'asc' | 'desc';
+  sortOrder: "asc" | "desc";
 }
 
 export interface PaginationRange {
@@ -22,8 +22,8 @@ export interface PaginationRange {
 export class PaginationHelper {
   static readonly DEFAULT_PAGE_INDEX = 0;
   static readonly DEFAULT_PAGE_SIZE = 10;
-  static readonly DEFAULT_SORT_BY = 'created_at';
-  static readonly DEFAULT_SORT_ORDER: 'asc' | 'desc' = 'desc';
+  static readonly DEFAULT_SORT_BY = "created_at";
+  static readonly DEFAULT_SORT_ORDER: "asc" | "desc" = "desc";
 
   static getDefaults(
     options?: PaginationOptions,

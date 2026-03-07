@@ -1,6 +1,6 @@
-import { PipeTransform, Injectable, ArgumentMetadata } from '@nestjs/common';
-import { ZodValidationException } from 'nestjs-zod';
-import { ZodSchema } from 'zod';
+import { PipeTransform, Injectable, ArgumentMetadata } from "@nestjs/common";
+import { ZodValidationException } from "nestjs-zod";
+import { ZodSchema } from "zod";
 
 @Injectable()
 export class CustomZodValidationPipe implements PipeTransform {

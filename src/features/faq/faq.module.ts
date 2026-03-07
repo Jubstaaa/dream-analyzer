@@ -1,9 +1,9 @@
-import { Module } from '@nestjs/common';
+import { Module } from "@nestjs/common";
 
-import { FaqRepository } from '@core/repositories';
+import { FaqRepository } from "@core/repositories";
 
-import { FaqController } from './faq.controller';
-import { FaqService } from './faq.service';
+import { FaqController } from "./faq.controller";
+import { FaqService } from "./faq.service";
 
 @Module({
   controllers: [FaqController],

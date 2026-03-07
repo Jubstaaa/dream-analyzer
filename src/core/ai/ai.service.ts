@@ -1,18 +1,18 @@
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { generateText } from 'ai';
-import { createOpenRouter } from '@openrouter/ai-sdk-provider';
+import { Injectable } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { generateText } from "ai";
+import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 
-import { LoggerService } from '@core/logger';
-import { DreamType } from '@shared/enums';
+import { LoggerService } from "@core/logger";
+import { DreamType } from "@shared/enums";
 
 const DREAM_TYPE_LABELS: Record<DreamType, string> = {
-  [DreamType.NORMAL]: 'normal',
-  [DreamType.NIGHTMARE]: 'nightmare',
-  [DreamType.LUCID]: 'lucid',
-  [DreamType.RECURRING]: 'recurring',
-  [DreamType.PROPHETIC]: 'prophetic',
-  [DreamType.MIXED]: 'mixed',
+  [DreamType.NORMAL]: "normal",
+  [DreamType.NIGHTMARE]: "nightmare",
+  [DreamType.LUCID]: "lucid",
+  [DreamType.RECURRING]: "recurring",
+  [DreamType.PROPHETIC]: "prophetic",
+  [DreamType.MIXED]: "mixed",
 };
 
 interface DreamAnalysisResult {
@@ -30,26 +30,26 @@ export class AiService {
     private readonly configService: ConfigService,
     private readonly logger: LoggerService,
   ) {
-    const apiKey = this.configService.get<string>('OPENROUTER_API_KEY');
+    const apiKey = this.configService.get<string>("OPENROUTER_API_KEY");
 
     if (!apiKey) {
       this.logger.error(
-        'OPENROUTER_API_KEY not found in environment',
-        'Check your .env file',
-        'AiService',
+        "OPENROUTER_API_KEY not found in environment",
+        "Check your .env file",
+        "AiService",
       );
       throw new Error(
-        'OPENROUTER_API_KEY is required. Please set it in .env file.',
+        "OPENROUTER_API_KEY is required. Please set it in .env file.",
       );
     }
 
     this.model =
-      this.configService.get<string>('OPENROUTER_MODEL') ||
-      'meta-llama/llama-3.1-8b-instruct:free';
+      this.configService.get<string>("OPENROUTER_MODEL") ||
+      "meta-llama/llama-3.1-8b-instruct:free";
 
     this.logger.log(
       `AI Service initialized with model: ${this.model}`,
-      'AiService',
+      "AiService",
     );
 
     this.openrouter = createOpenRouter({
@@ -68,12 +68,12 @@ export class AiService {
         model: this.openrouter(this.model),
         messages: [
           {
-            role: 'system',
+            role: "system",
             content:
-              'You are a professional dream interpreter and psychologist. Provide insightful, helpful dream analysis.',
+              "You are a professional dream interpreter and psychologist. Provide insightful, helpful dream analysis.",
           },
           {
-            role: 'user',
+            role: "user",
             content: prompt,
           },
         ],
@@ -83,12 +83,12 @@ export class AiService {
       const content = result.text;
 
       if (!content) {
-        throw new Error('No content in OpenRouter response');
+        throw new Error("No content in OpenRouter response");
       }
 
       this.logger.log(
         `AI Response (first 200 chars): ${content.substring(0, 200)}`,
-        'AiService',
+        "AiService",
       );
 
       const { title, interpretation } = this.parseResponse(content);
@@ -96,7 +96,7 @@ export class AiService {
 
       this.logger.log(
         `Dream analyzed successfully. Tokens: ${tokensUsed}, Title: "${title}"`,
-        'AiService',
+        "AiService",
       );
 
       return {
@@ -106,9 +106,9 @@ export class AiService {
       };
     } catch (error) {
       this.logger.error(
-        'Dream analysis failed',
-        error instanceof Error ? error.message : 'Unknown error',
-        'AiService',
+        "Dream analysis failed",
+        error instanceof Error ? error.message : "Unknown error",
+        "AiService",
       );
       throw error;
     }
@@ -134,10 +134,10 @@ INTERPRETATION: [your interpretation here]`;
     const titleMatch = content.match(/TITLE:\s*(.+?)(?:\n|INTERPRETATION:)/i);
     const interpretationMatch = content.match(/INTERPRETATION:\s*(.+)/is);
 
-    const title = titleMatch?.[1]?.trim() || 'Dream Entry';
+    const title = titleMatch?.[1]?.trim() || "Dream Entry";
     const interpretation =
       interpretationMatch?.[1]?.trim() ||
-      'Unable to generate interpretation at this time.';
+      "Unable to generate interpretation at this time.";
 
     return { title, interpretation };
   }

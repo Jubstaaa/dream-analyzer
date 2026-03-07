@@ -1,6 +1,6 @@
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
-import { env } from './env.config';
+import { env } from "./env.config";
 
 /**
  * Supabase client instance (anon key - for client-side operations)

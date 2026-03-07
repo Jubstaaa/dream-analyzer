@@ -1,14 +1,14 @@
-import { Injectable } from '@nestjs/common';
-import { I18nContext } from 'nestjs-i18n';
+import { Injectable } from "@nestjs/common";
+import { I18nContext } from "nestjs-i18n";
 
-import { AiService } from '@core/ai';
-import { LoggerService } from '@core/logger';
-import { DreamRepository } from '@core/repositories';
-import { DreamEntity } from '@shared/entities';
-import { PaginationRequest } from '@shared/schema/common.schema';
-import { ApiResponseBuilder, EntityHelper } from '@shared/utils';
+import { AiService } from "@core/ai";
+import { LoggerService } from "@core/logger";
+import { DreamRepository } from "@core/repositories";
+import { DreamEntity } from "@shared/entities";
+import { PaginationRequest } from "@shared/schema/common.schema";
+import { ApiResponseBuilder, EntityHelper } from "@shared/utils";
 
-import { CreateDreamDto } from './dto/dream.request';
+import { CreateDreamDto } from "./dto/dream.request";
 
 @Injectable()
 export class DreamService {
@@ -32,15 +32,15 @@ export class DreamService {
 
     return ApiResponseBuilder.paginated(
       result,
-      String(i18n.t('dream.fetched')),
+      String(i18n.t("dream.fetched")),
     );
   }
 
   async getDreamById(userId: string, dreamId: string, i18n: I18nContext) {
     const dream = await this.dreamRepository.findById(dreamId);
-    EntityHelper.verifyOwnership(dream, 'Dream', dreamId, userId);
+    EntityHelper.verifyOwnership(dream, "Dream", dreamId, userId);
 
-    return ApiResponseBuilder.success(dream, String(i18n.t('dream.fetched')));
+    return ApiResponseBuilder.success(dream, String(i18n.t("dream.fetched")));
   }
 
   async createDream(userId: string, dto: CreateDreamDto, i18n: I18nContext) {
@@ -55,41 +55,41 @@ export class DreamService {
         userId,
         title: analysis.title,
         content: dto.description,
-        type: dto.type as DreamEntity['type'],
+        type: dto.type,
         date: new Date().toISOString(),
         interpretation: analysis.interpretation,
-        aiModel: 'meta-llama/llama-3.1-8b-instruct:free',
+        aiModel: "meta-llama/llama-3.1-8b-instruct:free",
         aiTokensUsed: analysis.tokensUsed,
         interpretationGeneratedAt: new Date().toISOString(),
       };
 
-      this.logger.log('Creating dream in database...', 'DreamService');
+      this.logger.log("Creating dream in database...", "DreamService");
 
       const dream = await this.dreamRepository.create(dreamData);
 
       this.logger.log(
         `Dream created with AI analysis: ${dream.id}, tokens: ${analysis.tokensUsed}`,
-        'DreamService',
+        "DreamService",
       );
 
-      this.logger.log('Building API response...', 'DreamService');
+      this.logger.log("Building API response...", "DreamService");
 
       const response = ApiResponseBuilder.success(
         dream,
-        String(i18n.t('dream.created')),
+        String(i18n.t("dream.created")),
       );
 
-      this.logger.log('Response built successfully', 'DreamService');
+      this.logger.log("Response built successfully", "DreamService");
 
       return response;
     } catch (error) {
       // Fallback: If AI fails, create dream with simple title and no interpretation
       this.logger.error(
-        'Dream creation failed',
+        "Dream creation failed",
         error instanceof Error ? error.message : JSON.stringify(error),
-        'DreamService',
+        "DreamService",
       );
-      console.error('Full error object:', error);
+      console.error("Full error object:", error);
 
       const title = this.generateTitleFromDescription(dto.description);
 
@@ -97,7 +97,7 @@ export class DreamService {
         userId,
         title,
         content: dto.description,
-        type: dto.type as DreamEntity['type'],
+        type: dto.type,
         date: new Date().toISOString(),
         interpretation: null,
         aiModel: null,
@@ -106,9 +106,9 @@ export class DreamService {
       };
 
       const dream = await this.dreamRepository.create(dreamData);
-      this.logger.log(`Dream created without AI: ${dream.id}`, 'DreamService');
+      this.logger.log(`Dream created without AI: ${dream.id}`, "DreamService");
 
-      return ApiResponseBuilder.success(dream, String(i18n.t('dream.created')));
+      return ApiResponseBuilder.success(dream, String(i18n.t("dream.created")));
     }
   }
 
@@ -119,8 +119,8 @@ export class DreamService {
   private generateTitleFromDescription(description: string): string {
     const firstSentence = description.split(/[.!?]/)[0].trim();
     if (firstSentence.length > 50) {
-      return firstSentence.substring(0, 47) + '...';
+      return firstSentence.substring(0, 47) + "...";
     }
-    return firstSentence || 'Dream Entry';
+    return firstSentence || "Dream Entry";
   }
 }
