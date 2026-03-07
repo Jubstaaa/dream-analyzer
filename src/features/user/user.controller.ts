@@ -2,7 +2,7 @@ import { Body, Controller, Get, Patch, Post } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { I18n, I18nContext } from "nestjs-i18n";
 
-import { CurrentUser } from "@features/auth";
+import { CurrentSupabaseUser, CurrentUser } from "@features/auth";
 import type { UserEntity } from "@shared/entities";
 
 import { UserService } from "./user.service";
@@ -25,11 +25,11 @@ export class UserController {
     type: UserProfileResponseDto,
   })
   createProfile(
-    @CurrentUser() user: UserEntity,
+    @CurrentSupabaseUser() supabaseUser: any,
     @Body() dto: CreateProfileDto,
     @I18n() i18n: I18nContext,
   ) {
-    return this.userService.createProfile(user, dto, i18n);
+    return this.userService.createProfile(supabaseUser, dto, i18n);
   }
 
   @Get("profile")

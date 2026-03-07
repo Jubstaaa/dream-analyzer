@@ -9,20 +9,26 @@ export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
   async createProfile(
-    user: UserEntity,
+    supabaseUser: any,
     data: Partial<Pick<UserEntity, "name" | "surname" | "gender" | "birthday">>,
     i18n: I18nContext,
   ) {
-    if (!user) {
-      // Since the user entity might be returned as null if not found (or anon), check
-      throw new Error("User not found");
+    if (!supabaseUser || !supabaseUser.id) {
+      throw new Error("Supabase user not found");
     }
 
-    const updated = await this.userRepository.update(user.id, data);
+    // Since they don't have a profile yet, we insert it rather than update
+    const newProfile = await this.userRepository.create({
+      id: supabaseUser.id,
+      email: supabaseUser.email,
+      ...data,
+      imageUrl: null,
+      premiumExpireDate: null,
+    });
 
     return {
       message: String(i18n.t("user.profileUpdated")),
-      data: updated,
+      data: newProfile,
     };
   }
 
