@@ -68,7 +68,7 @@ CREATE INDEX IF NOT EXISTS idx_dreams_ai_interpretation
 
 COMMENT ON COLUMN public.users.name IS 'User first name (required)';
 COMMENT ON COLUMN public.users.surname IS 'User last name (required)';
-COMMENT ON COLUMN public.dreams."aiModel" IS 'AI model used for interpretation (e.g., openrouter/meta-llama/llama-3.1-8b-instruct:free)';
+COMMENT ON COLUMN public.dreams."aiModel" IS 'AI model used for interpretation (e.g., gemini-2.5-flash)';
 COMMENT ON COLUMN public.dreams."aiTokensUsed" IS 'Number of tokens used for AI interpretation';
 COMMENT ON COLUMN public.dreams."interpretationGeneratedAt" IS 'Timestamp when AI interpretation was generated';
 

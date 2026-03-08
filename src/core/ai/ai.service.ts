@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { generateText } from "ai";
-import { createOpenRouter } from "@openrouter/ai-sdk-provider";
+import { createGoogleGenerativeAI } from "@ai-sdk/google";
 
 import { LoggerService } from "@core/logger";
 import { DreamType } from "@shared/enums";
@@ -15,7 +15,7 @@ const DREAM_TYPE_LABELS: Record<DreamType, string> = {
   [DreamType.MIXED]: "mixed",
 };
 
-interface DreamAnalysisResult {
+export interface DreamAnalysisResult {
   title: string;
   interpretation: string;
   tokensUsed: number;
@@ -23,36 +23,34 @@ interface DreamAnalysisResult {
 
 @Injectable()
 export class AiService {
-  private readonly openrouter: ReturnType<typeof createOpenRouter>;
+  private readonly google: ReturnType<typeof createGoogleGenerativeAI>;
   private readonly model: string;
 
   constructor(
     private readonly configService: ConfigService,
     private readonly logger: LoggerService,
   ) {
-    const apiKey = this.configService.get<string>("OPENROUTER_API_KEY");
+    const apiKey = this.configService.get<string>("GEMINI_API_KEY");
 
     if (!apiKey) {
       this.logger.error(
-        "OPENROUTER_API_KEY not found in environment",
+        "GEMINI_API_KEY not found in environment",
         "Check your .env file",
         "AiService",
       );
       throw new Error(
-        "OPENROUTER_API_KEY is required. Please set it in .env file.",
+        "GEMINI_API_KEY is required. Please set it in .env file.",
       );
     }
 
-    this.model =
-      this.configService.get<string>("OPENROUTER_MODEL") ||
-      "meta-llama/llama-3.1-8b-instruct:free";
+    this.model = "gemini-2.5-flash";
 
     this.logger.log(
       `AI Service initialized with model: ${this.model}`,
       "AiService",
     );
 
-    this.openrouter = createOpenRouter({
+    this.google = createGoogleGenerativeAI({
       apiKey,
     });
   }
@@ -65,7 +63,7 @@ export class AiService {
       const prompt = this.buildPrompt(description, dreamType);
 
       const result = await generateText({
-        model: this.openrouter(this.model),
+        model: this.google(this.model),
         messages: [
           {
             role: "system",
@@ -83,7 +81,7 @@ export class AiService {
       const content = result.text;
 
       if (!content) {
-        throw new Error("No content in OpenRouter response");
+        throw new Error("No content in Gemini AI response");
       }
 
       this.logger.log(
