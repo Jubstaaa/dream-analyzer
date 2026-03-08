@@ -1,13 +1,14 @@
-import {
-  CanActivate,
-  ExecutionContext,
-  Injectable,
-  UnauthorizedException,
-} from "@nestjs/common";
+import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
+import { I18nContext } from "nestjs-i18n";
 
 import { supabaseAdmin } from "@config";
 import { UserRepository } from "@core/repositories";
+import {
+  InvalidTokenException,
+  MissingTokenException,
+  UnauthorizedAccessException,
+} from "@core/exceptions";
 
 import { IS_PUBLIC_KEY } from "../decorators";
 
@@ -32,7 +33,15 @@ export class AuthGuard implements CanActivate {
     const token = this.extractTokenFromHeader(request);
 
     if (!token) {
-      throw new UnauthorizedException("Access token is required");
+      // If I18nContext is not available fallback to english text
+      const i18n = I18nContext.current();
+      const message = i18n
+        ? i18n.t("auth.missingToken", {
+            defaultValue: "Access token is required",
+          })
+        : "Access token is required";
+
+      throw new MissingTokenException(message);
     }
 
     try {
@@ -42,7 +51,13 @@ export class AuthGuard implements CanActivate {
       } = await supabaseAdmin.auth.getUser(token);
 
       if (error || !user) {
-        throw new UnauthorizedException("Invalid or expired token");
+        const i18n = I18nContext.current();
+        const message = i18n
+          ? i18n.t("auth.invalidToken", {
+              defaultValue: "Invalid or expired token",
+            })
+          : "Invalid or expired token";
+        throw new InvalidTokenException(message);
       }
 
       // Anonymous users or explicitly new users might not have a profile yet in public.users
@@ -56,10 +71,22 @@ export class AuthGuard implements CanActivate {
 
       return true;
     } catch (error) {
-      if (error instanceof UnauthorizedException) {
+      const i18n = I18nContext.current();
+      if (
+        error instanceof InvalidTokenException ||
+        error instanceof MissingTokenException ||
+        error instanceof UnauthorizedAccessException
+      ) {
         throw error;
       }
-      throw new UnauthorizedException("Authentication failed");
+
+      const message = i18n
+        ? i18n.t("auth.unauthorized", {
+            defaultValue: "Authentication failed",
+          })
+        : "Authentication failed";
+
+      throw new UnauthorizedAccessException(message);
     }
   }
 

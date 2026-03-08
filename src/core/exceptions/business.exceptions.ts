@@ -26,6 +26,22 @@ export class InvalidTokenException extends BaseException {
   }
 }
 
+export class MissingTokenException extends BaseException {
+  readonly errorCode = "MISSING_TOKEN";
+
+  constructor(message = "Access token is required") {
+    super(message, HttpStatus.UNAUTHORIZED);
+  }
+}
+
+export class UnauthorizedAccessException extends BaseException {
+  readonly errorCode = "UNAUTHORIZED_ACCESS";
+
+  constructor(message = "Authentication failed") {
+    super(message, HttpStatus.UNAUTHORIZED);
+  }
+}
+
 export class PremiumRequiredException extends BaseException {
   readonly errorCode = "PREMIUM_REQUIRED";
 
