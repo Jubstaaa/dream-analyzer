@@ -1,5 +1,10 @@
 import { Body, Controller, Get, Post } from "@nestjs/common";
-import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from "@nestjs/swagger";
 
 import type { UserEntity } from "@shared/entities";
 import { CurrentUser } from "@features/auth";
@@ -7,6 +12,7 @@ import { CurrentUser } from "@features/auth";
 import { SubscriptionService } from "./subscription.service";
 import { VerifyPurchaseDto } from "./dto/subscription.request";
 
+@ApiBearerAuth()
 @Controller("subscription")
 @ApiTags("subscription")
 export class SubscriptionController {

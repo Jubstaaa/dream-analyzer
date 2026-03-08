@@ -1,5 +1,10 @@
 import { Body, Controller, Get, Param, Post, Query } from "@nestjs/common";
-import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from "@nestjs/swagger";
 import { I18n, I18nContext } from "nestjs-i18n";
 
 import type { UserEntity } from "@shared/entities";
@@ -13,6 +18,7 @@ import {
   DreamSuccessResponseDto,
 } from "./dto/dream.response";
 
+@ApiBearerAuth()
 @Controller("dreams")
 @ApiTags("dream")
 export class DreamController {

@@ -1,5 +1,10 @@
 import { Body, Controller, Get, Patch, Post } from "@nestjs/common";
-import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from "@nestjs/swagger";
 import { I18n, I18nContext } from "nestjs-i18n";
 
 import { CurrentSupabaseUser, CurrentUser } from "@features/auth";
@@ -12,6 +17,7 @@ import {
   UserProfileResponseDto,
 } from "./dto";
 
+@ApiBearerAuth()
 @Controller("user")
 @ApiTags("user")
 export class UserController {
