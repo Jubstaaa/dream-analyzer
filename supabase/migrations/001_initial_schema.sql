@@ -54,7 +54,7 @@ WHERE premium_expire_date IS NOT NULL;
 -- ============================================
 
 CREATE TABLE public.dreams (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
   title TEXT NOT NULL CHECK (char_length(title) >= 3 AND char_length(title) <= 100),
   content TEXT NOT NULL CHECK (char_length(content) >= 10 AND char_length(content) <= 5000),
@@ -76,7 +76,7 @@ CREATE INDEX idx_dreams_created_at ON public.dreams(created_at DESC);
 -- ============================================
 
 CREATE TABLE public.insights (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   image_url TEXT NOT NULL,
   title TEXT NOT NULL CHECK (char_length(title) >= 3 AND char_length(title) <= 200),
   description TEXT NOT NULL CHECK (char_length(description) >= 10 AND char_length(description) <= 2000),
@@ -98,7 +98,7 @@ CREATE INDEX idx_insights_active ON public.insights(is_active) WHERE is_active =
 -- ============================================
 
 CREATE TABLE public.faqs (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   "order" INTEGER NOT NULL UNIQUE,
   is_active BOOLEAN NOT NULL DEFAULT true,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -114,7 +114,7 @@ CREATE INDEX idx_faqs_active ON public.faqs(is_active) WHERE is_active = true;
 -- ============================================
 
 CREATE TABLE public.faq_translations (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   faq_id UUID NOT NULL REFERENCES public.faqs(id) ON DELETE CASCADE,
   language TEXT NOT NULL CHECK (language IN ('en', 'tr')),
   question TEXT NOT NULL CHECK (char_length(question) >= 5 AND char_length(question) <= 500),
