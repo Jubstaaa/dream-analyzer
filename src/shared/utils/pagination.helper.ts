@@ -22,7 +22,7 @@ export interface PaginationRange {
 export class PaginationHelper {
   static readonly DEFAULT_PAGE_INDEX = 0;
   static readonly DEFAULT_PAGE_SIZE = 10;
-  static readonly DEFAULT_SORT_BY = "created_at";
+  static readonly DEFAULT_SORT_BY = "createdAt";
   static readonly DEFAULT_SORT_ORDER: "asc" | "desc" = "desc";
 
   static getDefaults(

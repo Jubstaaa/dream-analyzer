@@ -18,7 +18,7 @@ export class DreamRepository extends BaseRepository<DreamEntity> {
     userId: string,
     options?: PaginationOptions,
   ): Promise<PaginatedResponse<DreamEntity>> {
-    return this.findWithFilters({ userId }, options);
+    return this.findWithFilters({ userId }, options, "createdAt");
   }
 
   async findByType(
@@ -26,7 +26,7 @@ export class DreamRepository extends BaseRepository<DreamEntity> {
     type: DreamType,
     options?: PaginationOptions,
   ): Promise<PaginatedResponse<DreamEntity>> {
-    return this.findWithFilters({ userId, type }, options);
+    return this.findWithFilters({ userId, type }, options, "createdAt");
   }
 
   async countByUserId(userId: string): Promise<number> {
