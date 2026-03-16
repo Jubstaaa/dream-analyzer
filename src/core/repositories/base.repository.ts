@@ -42,8 +42,10 @@ export abstract class BaseRepository<T> {
     options?: PaginationOptions,
     defaultSortBy?: string,
   ): Promise<PaginatedResponse<T>> {
-    const { pageIndex, pageSize, sortBy, sortOrder } =
-      PaginationHelper.getDefaults(options, defaultSortBy);
+    const defaults = PaginationHelper.getDefaults(options, defaultSortBy);
+    const pageIndex = parseInt(String(defaults.pageIndex), 10);
+    const pageSize = parseInt(String(defaults.pageSize), 10);
+
     const { from, to } = PaginationHelper.calculateRange(pageIndex, pageSize);
 
     let query = this.supabase
