@@ -7,7 +7,7 @@ import {
   FaqTranslationEntity,
 } from "@shared/entities";
 import { PaginatedResponse } from "@shared/schema/common.schema";
-import { PaginationHelper, PaginationOptions } from "@shared/utils";
+import { PaginationOptions } from "@shared/utils";
 
 import { BaseRepository } from "./base.repository";
 
@@ -21,34 +21,19 @@ export class FaqRepository extends BaseRepository<FaqBaseEntity> {
     language: string,
     options?: PaginationOptions,
   ): Promise<PaginatedResponse<FaqEntity>> {
-    const { pageIndex, pageSize, sortBy, sortOrder } =
-      PaginationHelper.getDefaults(options, "order");
-    const { from, to } = PaginationHelper.calculateRange(pageIndex, pageSize);
+    const result = await this.findWithFilters<Record<string, unknown>>(
+      { isActive: true, "faq_translations.language": language },
+      options,
+      "order",
+      "*, faq_translations!inner(*)",
+    );
 
-    const { data, error, count } = await this.supabase
-      .from(this.tableName)
-      .select(
-        `
-        *,
-        faq_translations!inner(*)
-      `,
-        { count: "exact" },
-      )
-      .eq("isActive", true)
-      .eq("faq_translations.language", language)
-      .order(sortBy, { ascending: sortOrder === "asc" })
-      .range(from, to);
-
-    if (error) throw error;
-
-    return PaginationHelper.buildPaginatedResponse(
-      (data ?? []).map((item) =>
+    return {
+      ...result,
+      items: result.items.map((item) =>
         this.mapToEntityWithTranslation(item, language),
       ),
-      count,
-      pageIndex,
-      pageSize,
-    );
+    };
   }
 
   async findTranslation(
@@ -64,7 +49,9 @@ export class FaqRepository extends BaseRepository<FaqBaseEntity> {
 
     if (error) {
       if (error.code === "PGRST116") return null;
-      throw error;
+      throw new Error(
+        (error as { message?: string }).message ?? JSON.stringify(error),
+      );
     }
 
     return data as FaqTranslationEntity;

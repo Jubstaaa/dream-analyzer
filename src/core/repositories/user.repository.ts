@@ -20,7 +20,9 @@ export class UserRepository extends BaseRepository<UserEntity> {
 
     if (error) {
       if (error.code === "PGRST116") return null;
-      throw error;
+      throw new Error(
+        (error as { message?: string }).message ?? JSON.stringify(error),
+      );
     }
 
     return data as UserEntity;

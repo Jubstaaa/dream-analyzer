@@ -19,7 +19,9 @@ export abstract class BaseRepository<T> {
 
     if (error) {
       if (error.code === "PGRST116") return null;
-      throw error;
+      throw new Error(
+        (error as { message?: string }).message ?? JSON.stringify(error),
+      );
     }
 
     return data as T;
@@ -37,33 +39,61 @@ export abstract class BaseRepository<T> {
     return this.findWithFilters({}, options);
   }
 
-  protected async findWithFilters(
+  protected async findWithFilters<R = T>(
     filters: Record<string, unknown>,
     options?: PaginationOptions,
     defaultSortBy?: string,
-  ): Promise<PaginatedResponse<T>> {
-    const defaults = PaginationHelper.getDefaults(options, defaultSortBy);
-    const pageIndex = parseInt(String(defaults.pageIndex), 10);
-    const pageSize = parseInt(String(defaults.pageSize), 10);
+    selectString = "*",
+  ): Promise<PaginatedResponse<R>> {
+    const {
+      sortBy,
+      sortOrder,
+      pageIndex: rawPageIndex,
+      pageSize: rawPageSize,
+    } = PaginationHelper.getDefaults(options, defaultSortBy);
+    const pageIndex = parseInt(String(rawPageIndex), 10);
+    const pageSize = parseInt(String(rawPageSize), 10);
 
     const { from, to } = PaginationHelper.calculateRange(pageIndex, pageSize);
 
     let query = this.supabase
       .from(this.tableName)
-      .select("*", { count: "exact" });
+      .select(selectString, { count: "exact" });
 
     Object.entries(filters).forEach(([key, value]) => {
       query = query.eq(key, value);
     });
 
-    const { data, error, count } = await query
+    const { data, error, count, status } = await query
       .order(sortBy, { ascending: sortOrder === "asc" })
       .range(from, to);
 
-    if (error) throw error;
+    if (status === 416) {
+      let countQuery = this.supabase
+        .from(this.tableName)
+        .select("*", { count: "exact", head: true });
+      Object.entries(filters)
+        .filter(([key]) => !key.includes("."))
+        .forEach(([key, value]) => {
+          countQuery = countQuery.eq(key, value);
+        });
+      const { count: totalCount } = await countQuery;
+      return PaginationHelper.buildPaginatedResponse(
+        [],
+        totalCount,
+        pageIndex,
+        pageSize,
+      );
+    }
+
+    if (error) {
+      throw new Error(
+        (error as { message?: string }).message ?? JSON.stringify(error),
+      );
+    }
 
     return PaginationHelper.buildPaginatedResponse(
-      data as T[],
+      data as R[],
       count,
       pageIndex,
       pageSize,
@@ -77,7 +107,10 @@ export abstract class BaseRepository<T> {
       .select()
       .single();
 
-    if (error) throw error;
+    if (error)
+      throw new Error(
+        (error as { message?: string }).message ?? JSON.stringify(error),
+      );
 
     return created as T;
   }
@@ -90,7 +123,10 @@ export abstract class BaseRepository<T> {
       .select()
       .single();
 
-    if (error) throw error;
+    if (error)
+      throw new Error(
+        (error as { message?: string }).message ?? JSON.stringify(error),
+      );
 
     return updated as T;
   }
@@ -101,7 +137,10 @@ export abstract class BaseRepository<T> {
       .delete()
       .eq("id", id);
 
-    if (error) throw error;
+    if (error)
+      throw new Error(
+        (error as { message?: string }).message ?? JSON.stringify(error),
+      );
   }
 
   async count(filter?: Record<string, unknown>): Promise<number> {
@@ -117,7 +156,10 @@ export abstract class BaseRepository<T> {
 
     const { count, error } = await query;
 
-    if (error) throw error;
+    if (error)
+      throw new Error(
+        (error as { message?: string }).message ?? JSON.stringify(error),
+      );
 
     return count ?? 0;
   }
